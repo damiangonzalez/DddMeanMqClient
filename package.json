@@ -1,0 +1,17 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "Mean Mq with DDD",
+  "main": "example.js",
+  "dependencies": {
+    "express": "^4.9.6",
+    "jade": "^1.7.0",
+    "npm": "^1.4.28"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Damian Gonzalez",
+  "license": "ISC"
+}
