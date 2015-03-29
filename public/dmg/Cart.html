@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-resource.min.js"></script>
+</head>
+
+<body ng-app ng-controller="todoCtrl">
+
+<h2>My Inventory</h2>
+
+<form ng-submit="todoAdd()">
+    <div>
+        <div ng-repeat="x in storageFacility.Inventory.Items">
+            <input type="checkbox" ng-model="x.selected">
+            <span ng-bind="x.ItemId"></span>
+            <span ng-bind="x.ItemName"></span>
+        </div>
+    </div>
+    <h2>Selected</h2>
+    <div ng-repeat="x in storageFacility.Inventory.Items">
+         <span ng-show="x.selected" ng-bind="x.ItemName"></span>
+    </div>
+    <input type="submit" value="Add To Cart">
+</form>
+
+<br>
+
+<h2>My Cart</h2>
+
+<div ng-repeat="x in cartItemsList">
+    <span ng-bind="x.cartItemId"></span> <span ng-bind="x.cartItemName"></span>
+</div>
+
+<p><button ng-click="checkout()">Checkout</button></p>
+
+<script>
+    function todoCtrl($scope, $http) {
+        $http.get('http://localhost:63973/api/values/ABC4321').
+                success(function(data) {
+                    $scope.storageFacility = data;
+                });
+
+        $scope.cartItemsList = [];
+
+        $scope.todoAdd = function() {
+            // adding to cart should also call api that will perform "AddToCart" domain event
+            angular.forEach($scope.storageFacility.Inventory.Items, function(x) {
+                if (x.selected) {
+                    $scope.cartItemsList.push({cartItemName: x.ItemName, cartItemId: x.ItemId, done:false})
+                };
+            });
+        };
+
+        $scope.checkout = function() {
+            // assemble item ids for checkout clear the cart
+            $scope.selectedCartItemsList = [];
+            angular.forEach($scope.cartItemsList, function(x) {
+                $scope.selectedCartItemsList.push(x.cartItemId);
+            });
+            $scope.cartItemsList = [];
+
+            // call API to perform "CheckOut"
+            var dataObj = {
+                'EventType': 'InventoryDomainEventCheckoutItems',
+                'SourceDomain': 'ClientApi',
+                'TargetDomain': 'Inventory',
+                'FacilityId': 'ABC4321',
+                'ItemIdsToBeRemovedList': $scope.selectedCartItemsList
+            };
+
+            $http.post('http://localhost:63973/api/values', dataObj);
+        };
+    }
+</script>
+
+</body>
+</html>
