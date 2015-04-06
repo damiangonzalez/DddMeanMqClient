@@ -1,7 +1,7 @@
 {
 	"name": "dddmeanmq",
 	"version": "0.0.1",
-	"description": "Purchasing/Inventory Domain Application",
+	"description": "Purchasing Inventory Domain Application",
 	"dependencies": {
 		"bootstrap": "~3",
 		"angular": "~1.2",

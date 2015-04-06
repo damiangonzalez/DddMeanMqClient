@@ -3,7 +3,7 @@
 module.exports = {
 	app: {
 		title: 'DddMeanMq',
-		description: 'Purchasing/Inventory Domain Application',
+		description: 'Purchasing Inventory Domain Application',
 		keywords: 'MongoDB, Express, AngularJS, Node.js'
 	},
 	port: process.env.PORT || 3000,
