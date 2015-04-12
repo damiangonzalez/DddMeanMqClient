@@ -1,21 +1,68 @@
 <section data-ng-controller="InventoriesController" data-ng-init="find()">
-    <div class="page-header">
-        <h1>Inventories</h1>
+    <div ng-show="!storageFacility" class="page-header">
+        Loading Inventories. Please wait...
     </div>
-    <div class="list-group">
-        <a data-ng-repeat="inventory in inventories"
-           data-ng-href="#!/inventories/{{inventory._id}}"
-           class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="inventory.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="inventory.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="inventory.name"></h4>
-        </a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!inventories.$resolved || inventories.length">
-    	No Inventories yet, why don't you <a href="/#!/inventories/create">create one</a>?
-    </div>
+    <div ng-show="storageFacility">
+        <div class="page-header">
+            <h1>Inventories</h1>
+        </div>
+        <!--
+        <div class="list-group">
+            <a data-ng-repeat="inventory in inventories"
+               data-ng-href="#!/inventories/{{inventory._id}}"
+               class="list-group-item">
+                <small class="list-group-item-text">
+                    Posted on
+                    <span data-ng-bind="inventory.created | date:'medium'"></span>
+                    by
+                    <span data-ng-bind="inventory.user.displayName"></span>
+                </small>
+                <h4 class="list-group-item-heading" data-ng-bind="inventory.name"></h4>
+            </a>
+        </div>
+        <div class="alert alert-warning text-center" data-ng-hide="!inventories.$resolved || inventories.length">
+            No Inventories yet, why don't you <a href="/#!/inventories/create">create one</a>?
+        </div>
+        -->
+
+        <div class="list-group">
+            <div data-ng-repeat="inventory in storageFacility.Inventory.Items"
+                 class="list-group-item">
+
+                <div class="row">
+                    <div class="col-xs-1">
+                        <input type="checkbox" data-ng-model="inventory.selected">
+                    </div>
+                    <div class="col-xs-11">
+                        <b>Item ID:</b>
+                        <span data-ng-bind="inventory.ItemId"></span>
+                        <br/>
+                        <b>Item Name:</b>
+                        <span data-ng-bind="inventory.ItemName"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-ng-show="storageFacility.Inventory.Items | filter:{selected: true}">
+            <div class="page-header">
+                <h1>Cart</h1>
+            </div>
+            <div class="list-group">
+                <div data-ng-repeat="inventory in storageFacility.Inventory.Items">
+
+                    <div class="list-group-item" data-ng-show="inventory.selected">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <b>Item ID:</b>
+                                <span data-ng-bind="inventory.ItemId"></span>
+                                <br/>
+                                <b>Item Name:</b>
+                                <span data-ng-bind="inventory.ItemName"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </section>

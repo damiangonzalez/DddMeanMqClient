@@ -48,7 +48,10 @@
             // adding to cart should also call api that will perform "AddToCart" domain event
             angular.forEach($scope.storageFacility.Inventory.Items, function(x) {
                 if (x.selected) {
-                    $scope.cartItemsList.push({cartItemName: x.ItemName, cartItemId: x.ItemId, done:false})
+                    $scope.cartItemsList.push({
+                        cartItemName: x.ItemName,
+                        cartItemId: x.ItemId,
+                        done:false})
                 };
             });
         };

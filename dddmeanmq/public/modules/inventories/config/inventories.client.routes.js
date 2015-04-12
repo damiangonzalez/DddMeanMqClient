@@ -20,6 +20,10 @@ angular.module('inventories').config(['$stateProvider',
 		state('editInventory', {
 			url: '/inventories/:inventoryId/edit',
 			templateUrl: 'modules/inventories/views/edit-inventory.client.view.html'
-		});
+		}).
+        state('testInventory', {
+            url: '/testCart',
+            templateUrl: 'modules/inventories/Cart.html'
+        });
 	}
 ]);

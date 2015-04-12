@@ -1,66 +1,77 @@
 'use strict';
 
 // Inventories controller
-angular.module('inventories').controller('InventoriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Inventories',
-	function($scope, $stateParams, $location, Authentication, Inventories) {
-		$scope.authentication = Authentication;
+angular.module('inventories').controller('InventoriesController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Inventories',
+    function ($scope, $http, $stateParams, $location, Authentication, Inventories) {
+        $scope.authentication = Authentication;
 
-		// Create new Inventory
-		$scope.create = function() {
-			// Create new Inventory object
-			var inventory = new Inventories ({
-				name: this.name
-			});
+        // Create new Inventory
+        $scope.create = function () {
+            // Create new Inventory object
+            var inventory = new Inventories({
+                name: this.name
+            });
 
-			// Redirect after save
-			inventory.$save(function(response) {
-				$location.path('inventories/' + response._id);
+            // Redirect after save
+            inventory.$save(function (response) {
+                $location.path('inventories/' + response._id);
 
-				// Clear form fields
-				$scope.name = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+                // Clear form fields
+                $scope.name = '';
+            }, function (errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+        };
 
-		// Remove existing Inventory
-		$scope.remove = function(inventory) {
-			if ( inventory ) { 
-				inventory.$remove();
+        // Remove existing Inventory
+        $scope.remove = function (inventory) {
+            if (inventory) {
+                inventory.$remove();
 
-				for (var i in $scope.inventories) {
-					if ($scope.inventories [i] === inventory) {
-						$scope.inventories.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.inventory.$remove(function() {
-					$location.path('inventories');
-				});
-			}
-		};
+                for (var i in $scope.inventories) {
+                    if ($scope.inventories [i] === inventory) {
+                        $scope.inventories.splice(i, 1);
+                    }
+                }
+            } else {
+                $scope.inventory.$remove(function () {
+                    $location.path('inventories');
+                });
+            }
+        };
 
-		// Update existing Inventory
-		$scope.update = function() {
-			var inventory = $scope.inventory;
+        // Update existing Inventory
+        $scope.update = function () {
+            var inventory = $scope.inventory;
 
-			inventory.$update(function() {
-				$location.path('inventories/' + inventory._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+            inventory.$update(function () {
+                $location.path('inventories/' + inventory._id);
+            }, function (errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+        };
 
-		// Find a list of Inventories
-		$scope.find = function() {
-			$scope.inventories = Inventories.query();
-		};
+        // Find a list of Inventories
 
-		// Find existing Inventory
-		$scope.findOne = function() {
-			$scope.inventory = Inventories.get({ 
-				inventoryId: $stateParams.inventoryId
-			});
-		};
-	}
+        $scope.find = function () {
+            $scope.inventories = Inventories.query();
+
+            $http.get('http://damiango7xt1700:8080/api/values/ABC4321').
+                success(function (data) {
+                    console.log(data);
+                    $scope.storageFacility = data;
+                    /*                    angular.forEach($scope.storageFacility.Inventory.Items, function(x) {
+                     x.selected = false;
+                     console.log(x);
+                     });*/
+                });
+        };
+
+        // Find existing Inventory
+        $scope.findOne = function () {
+            $scope.inventory = Inventories.get({
+                inventoryId: $stateParams.inventoryId
+            });
+        };
+    }
 ]);
