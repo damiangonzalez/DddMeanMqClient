@@ -1,4 +1,4 @@
-<section data-ng-controller="InventoriesController" data-ng-init="find()">
+<section data-ng-controller="InventoriesController" data-ng-init="findNew()">
     <div ng-show="!storageFacility" class="page-header">
         Loading Inventories. Please wait...
     </div>
@@ -44,13 +44,12 @@
             </div>
         </div>
 
-        <div data-ng-show="storageFacility.Inventory.Items | filter:{selected: true}">
+        <div data-ng-show="itemsAreSelected()">
             <div class="page-header">
                 <h1>Cart</h1>
             </div>
             <div class="list-group">
                 <div data-ng-repeat="inventory in storageFacility.Inventory.Items">
-
                     <div class="list-group-item" data-ng-show="inventory.selected">
                         <div class="row">
                             <div class="col-xs-12">
@@ -64,5 +63,7 @@
                     </div>
                 </div>
             </div>
+            <button type="submit" class="btn pull-right" data-ng-click="checkout()">Checkout</button>
         </div>
+    </div>
 </section>
